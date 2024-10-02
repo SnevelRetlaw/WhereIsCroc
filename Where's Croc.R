@@ -18,9 +18,30 @@
 #' and any changes to the 'mem' field you wish to access later on.
 
 myFunction=function(moveInfo,readings,positions,edges,probs) {
-  # check if a tourist has been eaten
+  # Calculate transition matrix if it is not in memory
 
-  # run markov analysis.
+  # (check if a tourist has been eaten)
+
+  # calculate probabilies for croc being in each waterhole. This is the emmission matrix
+  probabilityVector = generateProbabilityMatrix(readings, probs)
+
+  # (Exclude waterholes where tourists are and ranger)
+
+  # multiply transition matrix with emission matrix
+
+  # determine move from resulting vector.
+
   moveInfo$moves=c(sample(getOptions(positions[3],edges),1),0)
   return(moveInfo)
+}
+
+
+generateProbabilityMatrix=function(readings, probs){
+  #loop through matrix of mean and stdev
+  # calculate probability for each measurement of a waterhole using gaussian distribution
+
+  # compute average of the three probabilities to get probability of the watehole
+
+  # add to list.
+
 }
