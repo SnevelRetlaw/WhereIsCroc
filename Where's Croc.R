@@ -18,6 +18,9 @@
 #' and any changes to the 'mem' field you wish to access later on.
 
 myFunction=function(moveInfo,readings,positions,edges,probs) {
+  # check if a tourist has been eaten
+
+  # run markov analysis.
   moveInfo$moves=c(sample(getOptions(positions[3],edges),1),0)
   return(moveInfo)
 }
