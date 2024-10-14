@@ -118,7 +118,11 @@ generateWaterholeProb = function(readings, probs , N) {
     # TODO make prob 0 if either of the 3 is 0.
     
     # compute average of the three probabilities to get probability of the watehole
-    waterhole_prob[i] = (salinity_prob + phosphate_prob + nitrogen_prob) / 3
+    if(salinity_prob == 0 || phosphate_prob == 0 || nitrogen_prob == 0){
+      waterhole_prob[i] = 0
+    } else {
+      waterhole_prob[i] = (salinity_prob + phosphate_prob + nitrogen_prob) / 3
+    }
     
   }
   return(waterhole_prob)
