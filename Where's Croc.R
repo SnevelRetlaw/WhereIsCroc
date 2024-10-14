@@ -49,17 +49,13 @@ myFunction = function(moveInfo,
   
   # Get the waterhole with the highest probability
   moveHole = which.max(alpha)
-  
-<<<<<<< HEAD
-  # TODO: Compute the shortest path to 'moveHole' (A* comeback?!)
-  
-  # TODO: first waterhole of the shortest path and put it in moveInfo$moves (together with a 0)
-  
-  # Update moveInfo with the move to the waterhole with the highest probability and save alpha
-  moveInfo$moves = c(moveHole, 0)
-=======
+  #print(alpha)
+  #print(order(unlist(alpha)))
+  #print(moveHole)
   # Find the shortest path to the waterhole with the highest probability
   path = a_star(edges, positions[3], moveHole)$path
+  
+  #print(path)
   
   # When a tourist has been eaten
     if (!is.na(positions[1]) && positions[1] < 0) {
@@ -83,9 +79,14 @@ myFunction = function(moveInfo,
     nextMove = positions[3]
   }
   
+  if (length(path) > 2){
+    extraMove = path[3]
+  } else {
+    extraMove = 0
+  }
+  
   # Update moveInfo with the move to the waterhole with the highest probability and save alpha
-  moveInfo$moves = c(nextMove, 0)
->>>>>>> refs/remotes/origin/main
+  moveInfo$moves = c(nextMove, extraMove)
   moveInfo$mem$alpha = alpha
   return(moveInfo)
   
@@ -113,6 +114,8 @@ generateWaterholeProb = function(readings, probs , N) {
     salinity_prob = dnorm(readings[1], salinity[1], salinity[2])
     phosphate_prob = dnorm(readings[2], phosphate[1], phosphate[2])
     nitrogen_prob = dnorm(readings[3], nitrogen[1], nitrogen[2])
+    
+    # TODO make prob 0 if either of the 3 is 0.
     
     # compute average of the three probabilities to get probability of the watehole
     waterhole_prob[i] = (salinity_prob + phosphate_prob + nitrogen_prob) / 3
