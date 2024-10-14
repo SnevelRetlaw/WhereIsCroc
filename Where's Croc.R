@@ -47,28 +47,37 @@ myFunction = function(moveInfo,
   # Calculate forward probabilities for each waterhole
   alpha = forward_step(alpha, transition_prob, emission_probs, N)
   
+  
+  # Process information of tourists
+    if (!is.na(positions[1])) {
+      # has ben eaten
+      if(positions[1] < 0){
+        #path = a_star(edges, positions[3], positions[1] * -1)$path
+        alpha = rep(0, N)
+        alpha[positions[1] * -1] = 1
+      } else {
+        alpha[positions[1]] = 0
+      }
+    }
+    if (!is.na(positions[2])) {
+      if (positions[2] < 0){
+        #path = a_star(edges, positions[3], positions[2] * -1)$path
+        alpha = rep(0, N)
+        alpha[positions[2]* -1] = 1
+      } else {
+        alpha[positions[2]] = 0
+      }
+    }
+  
   # Get the waterhole with the highest probability
   moveHole = which.max(alpha)
-  #print(alpha)
-  #print(order(unlist(alpha)))
-  #print(moveHole)
+  print(alpha)
+  print(order(unlist(alpha)))
+  print(moveHole)
   # Find the shortest path to the waterhole with the highest probability
   path = a_star(edges, positions[3], moveHole)$path
   
-  #print(path)
-  
-  # When a tourist has been eaten
-    if (!is.na(positions[1]) && positions[1] < 0) {
-      path = a_star(edges, positions[3], positions[1] * -1)$path
-      alpha = rep(0, N)
-      alpha[positions[1] * -1] = 1
-    }
-    if (!is.na(positions[2]) && positions[2] < 0) {
-      path = a_star(edges, positions[3], positions[2] * -1)$path
-      alpha = rep(0, N)
-      alpha[positions[2]* -1] = 1
-    }
-  
+  print(path)
   
   # If the waterhole with the highest probability is the current waterhole, search
   # Extract move
