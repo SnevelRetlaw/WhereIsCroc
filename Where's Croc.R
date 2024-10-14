@@ -45,8 +45,12 @@ myFunction = function(moveInfo,
   # Get the waterhole with the highest probability
   moveHole = which.max(alpha)
   
+  # TODO: Compute the shortest path to 'moveHole' (A* comeback?!)
+  
+  # TODO: first waterhole of the shortest path and put it in moveInfo$moves (together with a 0)
+  
   # Update moveInfo with the move to the waterhole with the highest probability and save alpha
-  moveInfo$moves = moveHole
+  moveInfo$moves = c(moveHole, 0)
   moveInfo$mem$alpha = alpha
   return(moveInfo)
   
