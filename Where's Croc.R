@@ -79,6 +79,7 @@ myFunction = function(moveInfo,
     nextMove = positions[3]
   }
   
+  # Make a second move if the path is longer than 2 steps
   if (length(path) > 2){
     extraMove = path[3]
   } else {
@@ -115,10 +116,10 @@ generateWaterholeProb = function(readings, probs , N) {
     phosphate_prob = dnorm(readings[2], phosphate[1], phosphate[2])
     nitrogen_prob = dnorm(readings[3], nitrogen[1], nitrogen[2])
     
-    # TODO make prob 0 if either of the 3 is 0.
+    # TODO make prob 0 if either of the 3 is extremely low .
     
     # compute average of the three probabilities to get probability of the watehole
-    if(salinity_prob == 0 || phosphate_prob == 0 || nitrogen_prob == 0){
+    if(salinity_prob < 0.0000001 || phosphate_prob < 0.0000001 || nitrogen_prob < 0.000001){
       waterhole_prob[i] = 0
     } else {
       waterhole_prob[i] = (salinity_prob + phosphate_prob + nitrogen_prob) / 3
