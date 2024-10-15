@@ -38,33 +38,55 @@ myFunction = function(moveInfo,
   if (length(moveInfo$mem) == 1 || moveInfo$mem$status == 1) {
     alpha = rep(1 / N, N)
     moveInfo$mem$status = 0
+    if (!is.null(moveInfo$mem$counter)) {
+      moveInfo$mem$counter = moveInfo$mem$counter + 1
+    } else {
+      moveInfo$mem$counter = 0
+    }
+    print("New game")
+    print(moveInfo$mem$counter)
   } else{
     alpha = moveInfo$mem$alpha
   }
   
+  # If the last move was a search, reset the probability of the last waterhole
+  alpha[positions[3]] = 0
+  
+  # If a tourist are alive, reset their waterhole probabilities
+  if (!(!is.na(positions[1]) && positions[1] < 0)) {
+    alpha[positions[1]] = 0
+  }
+  if (!(!is.na(positions[2]) && positions[2] < 0)) {
+    alpha[positions[2]] = 0
+  }
+  
   #################
   
+  #cat("0s", sum(alpha == 0), "\n")
   # Calculate forward probabilities for each waterhole
   alpha = forward_step(alpha, transition_prob, emission_probs, N)
+  
+  
+  # When a tourist has been eaten
+  if (!is.na(positions[1]) && positions[1] < 0) {
+    alpha = rep(0, N)
+    alpha[positions[1] * -1] = 1
+  }
+  if (!is.na(positions[2]) && positions[2] < 0) {
+    alpha = rep(0, N)
+    alpha[positions[2]* -1] = 1
+  }
   
   # Get the waterhole with the highest probability
   moveHole = which.max(alpha)
   
+  if(length(moveHole) < 1){
+    print(moveInfo)
+    print(alpha)
+  }
+  
   # Find the shortest path to the waterhole with the highest probability
   path = a_star(edges, positions[3], moveHole)$path
-  
-  # When a tourist has been eaten
-    if (!is.na(positions[1]) && positions[1] < 0) {
-      path = a_star(edges, positions[3], positions[1] * -1)$path
-      alpha = rep(0, N)
-      alpha[positions[1] * -1] = 1
-    }
-    if (!is.na(positions[2]) && positions[2] < 0) {
-      path = a_star(edges, positions[3], positions[2] * -1)$path
-      alpha = rep(0, N)
-      alpha[positions[2]* -1] = 1
-    }
-  
   
   # If the waterhole with the highest probability is the current waterhole, search
   # Extract move
@@ -78,13 +100,8 @@ myFunction = function(moveInfo,
   # Update moveInfo with the move to the waterhole with the highest probability and save alpha
   moveInfo$moves = c(nextMove, 0)
   moveInfo$mem$alpha = alpha
+  #cat("Move: ", nextMove, "\n")
   return(moveInfo)
-  
-  ############### Walter comments / TODOs ################
-  
-  # Calculate transition matrix if it is not in memory
-  
-  # (Exclude waterholes where tourists are and ranger)
 }
 
 # Function to calculate probability of each waterhole given sensor readings
