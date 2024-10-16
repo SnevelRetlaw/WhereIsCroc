@@ -50,22 +50,22 @@ myFunction = function(moveInfo,
   
   
   # Process information of tourists
-    if (!is.na(positions[1])) {
-      if(positions[1] < 0){
-        alpha = rep(0, N)
-        alpha[positions[1] * -1] = 1
-      } else {
-        alpha[positions[1]] = 0
-      }
+  if (!is.na(positions[1])) {
+    if(positions[1] < 0){
+      alpha = rep(0, N)
+      alpha[positions[1] * -1] = 1
+    } else {
+      alpha[positions[1]] = 0
     }
-    if (!is.na(positions[2])) {
-      if (positions[2] < 0){
-        alpha = rep(0, N)
-        alpha[positions[2]* -1] = 1
-      } else {
-        alpha[positions[2]] = 0
-      }
+  }
+  if (!is.na(positions[2])) {
+    if (positions[2] < 0){
+      alpha = rep(0, N)
+      alpha[positions[2]* -1] = 1
+    } else {
+      alpha[positions[2]] = 0
     }
+  }
   
   # Get the waterhole with the highest probability
   moveHole = which.max(alpha)
@@ -92,6 +92,7 @@ myFunction = function(moveInfo,
     secondMove = path[3]
   } else {
     secondMove = 0
+    alpha[firstMove] = 0
   }
   
   # Update moveInfo with the move to the waterhole with the highest probability and save alpha
