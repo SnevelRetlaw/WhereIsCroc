@@ -42,6 +42,7 @@ myFunction = function(moveInfo,
     alpha = moveInfo$mem$alpha
   }
   
+  
   #################
   
   # Calculate forward probabilities for each waterhole
@@ -50,19 +51,15 @@ myFunction = function(moveInfo,
   
   # Process information of tourists
     if (!is.na(positions[1])) {
-      # has ben eaten
       if(positions[1] < 0){
-        #path = a_star(edges, positions[3], positions[1] * -1)$path
         alpha = rep(0, N)
         alpha[positions[1] * -1] = 1
       } else {
-        #not eatens
         alpha[positions[1]] = 0
       }
     }
     if (!is.na(positions[2])) {
       if (positions[2] < 0){
-        #path = a_star(edges, positions[3], positions[2] * -1)$path
         alpha = rep(0, N)
         alpha[positions[2]* -1] = 1
       } else {
@@ -72,33 +69,33 @@ myFunction = function(moveInfo,
   
   # Get the waterhole with the highest probability
   moveHole = which.max(alpha)
+  
   #print(alpha)
   #print(order(unlist(alpha)))
-  #print("Hole with highest probability")
-  #print(moveHole)
+  #cat("Hole with highest probability: ", moveHole, "\n")
+  
   # Find the shortest path to the waterhole with the highest probability
   path = a_star(edges, positions[3], moveHole)$path
   
   #print(path)
   
-  # If the waterhole with the highest probability is the current waterhole, search
   # Extract move
   if (length(path) > 1) {
-    nextMove = path[2]
+    firstMove = path[2]
   } else {
     # If no valid second step, stay in the current waterhole and search
-    nextMove = positions[3]
+    firstMove = positions[3]
   }
   
   # Make a second move if the path is longer than 2 steps
   if (length(path) > 2){
-    extraMove = path[3]
+    secondMove = path[3]
   } else {
-    extraMove = 0
+    secondMove = 0
   }
   
   # Update moveInfo with the move to the waterhole with the highest probability and save alpha
-  moveInfo$moves = c(nextMove, extraMove)
+  moveInfo$moves = c(firstMove, secondMove)
   moveInfo$mem$alpha = alpha
   return(moveInfo)
   
@@ -127,7 +124,6 @@ generateWaterholeProb = function(readings, probs , N) {
     phosphate_prob = dnorm(readings[2], phosphate[1], phosphate[2])
     nitrogen_prob = dnorm(readings[3], nitrogen[1], nitrogen[2])
     
-    # TODO make prob 0 if either of the 3 is extremely low .
     
     # compute average of the three probabilities to get probability of the watehole
     if(salinity_prob < 0.0000001 || phosphate_prob < 0.0000001 || nitrogen_prob < 0.000001){
