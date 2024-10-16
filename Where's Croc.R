@@ -56,6 +56,7 @@ myFunction = function(moveInfo,
         alpha = rep(0, N)
         alpha[positions[1] * -1] = 1
       } else {
+        #not eatens
         alpha[positions[1]] = 0
       }
     }
@@ -71,13 +72,14 @@ myFunction = function(moveInfo,
   
   # Get the waterhole with the highest probability
   moveHole = which.max(alpha)
-  print(alpha)
-  print(order(unlist(alpha)))
-  print(moveHole)
+  #print(alpha)
+  #print(order(unlist(alpha)))
+  #print("Hole with highest probability")
+  #print(moveHole)
   # Find the shortest path to the waterhole with the highest probability
   path = a_star(edges, positions[3], moveHole)$path
   
-  print(path)
+  #print(path)
   
   # If the waterhole with the highest probability is the current waterhole, search
   # Extract move
@@ -131,7 +133,9 @@ generateWaterholeProb = function(readings, probs , N) {
     if(salinity_prob < 0.0000001 || phosphate_prob < 0.0000001 || nitrogen_prob < 0.000001){
       waterhole_prob[i] = 0
     } else {
-      waterhole_prob[i] = (salinity_prob + phosphate_prob + nitrogen_prob) / 3
+      #waterhole_prob[i] = (salinity_prob + phosphate_prob + nitrogen_prob) / 3
+      waterhole_prob[i] = (salinity_prob * phosphate_prob * nitrogen_prob)
+      
     }
     
   }
