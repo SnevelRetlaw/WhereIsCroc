@@ -48,7 +48,6 @@ myFunction = function(moveInfo,
   # Calculate forward probabilities for each waterhole
   alpha = forward_step(alpha, transition_prob, emission_probs, N)
   
-  
   # Process information of tourists
   if (!is.na(positions[1])) {
     if(positions[1] < 0){
@@ -70,8 +69,8 @@ myFunction = function(moveInfo,
   # Get the waterhole with the highest probability
   moveHole = which.max(alpha)
   
-  #print(alpha)
-  #print(order(unlist(alpha)))
+  # print(alpha)
+  # print(order(unlist(alpha)))
   #cat("Hole with highest probability: ", moveHole, "\n")
   
   # Find the shortest path to the waterhole with the highest probability
@@ -99,12 +98,6 @@ myFunction = function(moveInfo,
   moveInfo$moves = c(firstMove, secondMove)
   moveInfo$mem$alpha = alpha
   return(moveInfo)
-  
-  ############### Walter comments / TODOs ################
-  
-  # Calculate transition matrix if it is not in memory
-  
-  # (Exclude waterholes where tourists are and ranger)
 }
 
 # Function to calculate probability of each waterhole given sensor readings
