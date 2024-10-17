@@ -112,7 +112,7 @@ generateWaterholeProb = function(readings, probs , N) {
   # loop through matrix of mean and stdev of each waterhole
   # calculate probability for each measurement of a waterhole using gaussian distribution
   
-  waterhole_prob = rep(0, 40)
+  waterhole_prob = rep(0, N)
   
   for (i in 1:N) {
     # get mean and stdev for each measurement
@@ -125,15 +125,7 @@ generateWaterholeProb = function(readings, probs , N) {
     phosphate_prob = dnorm(readings[2], phosphate[1], phosphate[2])
     nitrogen_prob = dnorm(readings[3], nitrogen[1], nitrogen[2])
     
-    
-    # compute average of the three probabilities to get probability of the watehole
-    if(salinity_prob < 0.0000001 || phosphate_prob < 0.0000001 || nitrogen_prob < 0.000001){
-      waterhole_prob[i] = 0
-    } else {
-      #waterhole_prob[i] = (salinity_prob + phosphate_prob + nitrogen_prob) / 3
-      waterhole_prob[i] = (salinity_prob * phosphate_prob * nitrogen_prob)
-      
-    }
+    waterhole_prob[i] = (salinity_prob * phosphate_prob * nitrogen_prob)
     
   }
   return(waterhole_prob)
