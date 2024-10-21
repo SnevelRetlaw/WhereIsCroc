@@ -129,20 +129,13 @@ generateTransitionProb = function(alpha, edges, N){
   transition_matrix = matrix(0, nrow = N, ncol = N)
   
   for (i in 1:N){
-    # for each node:
-    # get probabillity
     node_prob = alpha[i]
-    # get all neighbors
     neighbors = unique(c(edges[edges[, 1] == i, 2], edges[edges[, 2] == i, 1]))
-    # divide probability by all neighbors + current hole
     divided_prob = node_prob /(length(neighbors) + 1)
-    # add each probability to right node in trans matrix (i, neighbor)
     for(neighbor in neighbors){
       transition_matrix[i,neighbor] = transition_matrix[i,neighbor] + divided_prob
     }
-    
   }
-  # return transition matrix
   return(transition_matrix)
 }
 
