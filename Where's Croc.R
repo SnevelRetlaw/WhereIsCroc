@@ -125,7 +125,6 @@ generateWaterholeProb = function(readings, probs , N) {
 }
 
 generateTransitionProb = function(alpha, edges, N){
-  # create new transition matrix
   transition_matrix = matrix(0, nrow = N, ncol = N)
   
   for (i in 1:N){
