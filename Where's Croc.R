@@ -27,9 +27,7 @@ myFunction = function(moveInfo,
   
   # Number of waterholes (states)
   N = 40
-  
-  # Function to calculate emission probability using normal distribution
-  emission_probs = generateWaterholeProb(readings, probs, N)
+
   
   # Initialize forward probabilities (alpha) to uniform at first step
   if (length(moveInfo$mem) == 1 || moveInfo$mem$status == 1) {
@@ -38,8 +36,10 @@ myFunction = function(moveInfo,
   } else{
     alpha = moveInfo$mem$alpha
   }
-  
+  # Function to calculate emission probability using normal distribution
+  emission_probs = generateWaterholeProb(readings, probs, N)
   transition_prob = generateTransitionProb(alpha, edges, N)
+  
   
   
   #################
@@ -134,7 +134,10 @@ generateTransitionProb = function(alpha, edges, N){
     for(neighbor in neighbors){
       transition_matrix[i,neighbor] = transition_matrix[i,neighbor] + divided_prob
     }
+    # also assign probability to the current node
+    transition_matrix[i, i] = transition_matrix[i, i] + divided_prob
   }
+  
   return(transition_matrix)
 }
 
